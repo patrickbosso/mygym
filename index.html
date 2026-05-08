@@ -3,841 +3,258 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<meta name="theme-color" content="#0a0a0f">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="MyGym">
-<link rel="manifest" href="manifest.json">
-<title>MyGym — Programme</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0a0a0f;
     --surface: #13131a;
     --surface2: #1c1c27;
+    --surface-focus: #22223a;
     --border: #2a2a3a;
     --accent: #e8ff47;
     --accent2: #ff6b35;
     --accent3: #4ecdc4;
     --text: #f0f0f5;
-    --text-muted: #7a7a9a;
+    --muted: #7a7a9a;
     --red: #ff4757;
     --green: #2ed573;
   }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* HEADER */
-  .app-header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(10,10,15,0.95);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-    padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .app-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    letter-spacing: 3px;
-    color: var(--accent);
-  }
-
-  .profile-badge {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 6px 12px;
-    font-size: 12px;
-    color: var(--text-muted);
-  }
-
-  .profile-badge span { color: var(--text); font-weight: 600; }
-
-  /* NAV TABS */
-  .nav-tabs {
-    display: flex;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .nav-tabs::-webkit-scrollbar { display: none; }
-
-  .nav-tab {
-    flex: 1;
-    min-width: 80px;
-    padding: 14px 10px;
-    border: none;
-    background: transparent;
-    color: var(--text-muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-
-  .nav-tab.active {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-  }
-
-  /* PAGES */
-  .page { display: none; padding: 20px; padding-bottom: 100px; }
-  .page.active { display: block; }
-
-  /* HERO STATS */
-  .hero-stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-bottom: 24px;
-  }
-
-  .stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 16px 12px;
-    text-align: center;
-  }
-
-  .stat-value {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    color: var(--accent);
-    line-height: 1;
-  }
-
-  .stat-label {
-    font-size: 10px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-top: 4px;
-  }
-
-  /* SECTION TITLE */
-  .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    letter-spacing: 2px;
-    color: var(--text-muted);
-    margin-bottom: 14px;
-    margin-top: 8px;
-  }
-
-  /* SESSION CARDS */
-  .session-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    margin-bottom: 16px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.15s, border-color 0.15s;
-  }
-
-  .session-card:active { transform: scale(0.98); }
-
-  .session-card-header {
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .session-tag {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 11px;
-    letter-spacing: 2px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    margin-bottom: 6px;
-    display: inline-block;
-  }
-
-  .tag-a { background: rgba(232,255,71,0.15); color: var(--accent); }
-  .tag-b { background: rgba(255,107,53,0.15); color: var(--accent2); }
-  .tag-c { background: rgba(78,205,196,0.15); color: var(--accent3); }
-  .tag-tfl { background: rgba(46,213,115,0.15); color: var(--green); }
-
-  .session-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 26px;
-    letter-spacing: 1px;
-    line-height: 1;
-  }
-
-  .session-meta {
-    font-size: 12px;
-    color: var(--text-muted);
-    margin-top: 4px;
-  }
-
-  .session-icon {
-    font-size: 36px;
-    opacity: 0.8;
-  }
-
-  .session-chevron {
-    width: 32px;
-    height: 32px;
-    background: var(--surface2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-muted);
-    font-size: 14px;
-    transition: background 0.2s;
-  }
-
-  /* EXERCISE LIST */
-  .session-body {
-    display: none;
-    padding: 0 20px 20px;
-    border-top: 1px solid var(--border);
-  }
-
-  .session-body.open { display: block; }
-
-  .muscle-group {
-    margin-top: 18px;
-  }
-
-  .muscle-label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 10px;
-    padding-bottom: 6px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .exercise-row {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(42,42,58,0.5);
-    gap: 10px;
-  }
-
-  .exercise-row:last-child { border-bottom: none; }
-
-  .exercise-name {
-    font-size: 14px;
-    font-weight: 500;
-    flex: 1;
-  }
-
-  .exercise-detail {
-    text-align: right;
-    flex-shrink: 0;
-  }
-
-  .exercise-sets {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 16px;
-    color: var(--accent);
-    letter-spacing: 1px;
-  }
-
-  .exercise-charge {
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-top: 2px;
-  }
-
-  .exercise-rest {
-    font-size: 10px;
-    color: var(--accent3);
-    margin-top: 2px;
-  }
-
-  /* TIMER */
-  .timer-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    z-index: 200;
-  }
-
-  .timer-display {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 36px;
-    color: var(--accent);
-    letter-spacing: 3px;
-    min-width: 90px;
-  }
-
-  .timer-display.warning { color: var(--accent2); }
-  .timer-display.done { color: var(--green); }
-
-  .timer-btn {
-    flex: 1;
-    padding: 14px;
-    border: none;
-    border-radius: 14px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.15s;
-    letter-spacing: 0.5px;
-  }
-
-  .timer-btn:active { transform: scale(0.97); }
-
-  .btn-start { background: var(--accent); color: #0a0a0f; }
-  .btn-stop { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
-
-  .timer-presets {
-    display: flex;
-    gap: 8px;
-  }
-
-  .preset-btn {
-    padding: 8px 12px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    background: var(--surface2);
-    color: var(--text-muted);
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
-  .preset-btn:active { background: var(--accent); color: #0a0a0f; border-color: var(--accent); }
-
-  /* PLANNING GRID */
-  .week-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 6px;
-    margin-bottom: 24px;
-  }
-
-  .day-cell {
-    aspect-ratio: 1;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    font-size: 9px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    gap: 3px;
-  }
-
-  .day-cell.has-session { border-color: var(--accent); background: rgba(232,255,71,0.05); }
-  .day-cell.has-session .day-type { color: var(--accent); font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 1px; }
-  .day-cell.rest-day { opacity: 0.4; }
-  .day-cell.tfl-day { border-color: var(--green); background: rgba(46,213,115,0.05); }
-  .day-cell.tfl-day .day-type { color: var(--green); font-family: 'Bebas Neue', sans-serif; font-size: 11px; }
-
-  /* NUTRITION */
-  .macro-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 14px;
-  }
-
-  .macro-title {
-    font-size: 12px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 14px;
-  }
-
-  .macro-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
-  }
-
-  .macro-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-  }
-
-  .macro-info { flex: 1; }
-  .macro-name { font-size: 13px; font-weight: 600; }
-  .macro-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-
-  .macro-value {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    color: var(--accent);
-    letter-spacing: 1px;
-  }
-
-  .macro-bar-wrap {
-    height: 4px;
-    background: var(--surface2);
-    border-radius: 2px;
-    margin-top: 6px;
-    overflow: hidden;
-  }
-
-  .macro-bar {
-    height: 100%;
-    border-radius: 2px;
-    transition: width 0.5s ease;
-  }
-
-  /* TFL EXERCISES */
-  .tfl-card {
-    background: var(--surface);
-    border: 1px solid rgba(46,213,115,0.3);
-    border-radius: 20px;
-    padding: 18px;
-    margin-bottom: 14px;
-  }
-
-  .tfl-number {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 40px;
-    color: rgba(46,213,115,0.2);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-
-  .tfl-name { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-  .tfl-detail { font-size: 12px; color: var(--text-muted); }
-  .tfl-target { font-size: 11px; color: var(--green); margin-top: 6px; font-weight: 500; }
-
-  .warning-card {
-    background: rgba(255,71,87,0.08);
-    border: 1px solid rgba(255,71,87,0.3);
-    border-radius: 16px;
-    padding: 16px;
-    margin-bottom: 14px;
-  }
-
-  .warning-title {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--red);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-  }
-
-  .warning-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 6px 0;
-    font-size: 13px;
-    color: var(--text-muted);
-  }
-
-  .warning-row::before { content: "⚠️"; font-size: 14px; }
-
-  /* ANIMATIONS */
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .page.active { animation: fadeIn 0.25s ease; }
-
-  .pulse {
-    animation: pulse 1s ease infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;font-size:14px}
+
+  .app-header{position:sticky;top:0;z-index:100;background:rgba(10,10,15,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+  .app-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:3px;color:var(--accent)}
+  .profile-badge{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:5px 10px;font-size:11px;color:var(--muted)}
+  .profile-badge span{color:var(--text);font-weight:600}
+
+  .nav-tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none}
+  .nav-tabs::-webkit-scrollbar{display:none}
+  .nav-tab{flex:1;min-width:68px;padding:12px 6px;border:none;background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
+  .nav-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+  .sub-nav{display:none;background:var(--bg);border-bottom:1px solid var(--border);padding:0 16px;overflow-x:auto;scrollbar-width:none}
+  .sub-nav::-webkit-scrollbar{display:none}
+  .sub-nav.visible{display:flex}
+  .sub-tab{padding:10px 16px;border:none;background:transparent;color:var(--muted);font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1.5px;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;flex-shrink:0}
+  .sub-tab.act-a{color:var(--accent);border-bottom-color:var(--accent)}
+  .sub-tab.act-b{color:var(--accent2);border-bottom-color:var(--accent2)}
+  .sub-tab.act-c{color:var(--accent3);border-bottom-color:var(--accent3)}
+
+  .page{display:none;padding:16px;padding-bottom:110px}
+  .page.active{display:block;animation:fadeIn .2s ease}
+  .seance-page{display:none}
+  .seance-page.active{display:block;animation:fadeIn .2s ease}
+
+  .hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
+  .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 10px;text-align:center}
+  .stat-value{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--accent);line-height:1}
+  .stat-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:3px}
+
+  .section-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--muted);margin-bottom:12px;margin-top:6px}
+
+  .session-hdr{border-radius:18px;padding:18px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
+  .session-tag{font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:2px;padding:3px 9px;border-radius:20px;margin-bottom:5px;display:inline-block}
+  .tag-a{background:rgba(232,255,71,.15);color:var(--accent)}
+  .tag-b{background:rgba(255,107,53,.15);color:var(--accent2)}
+  .tag-c{background:rgba(78,205,196,.15);color:var(--accent3)}
+  .tag-tfl{background:rgba(46,213,115,.15);color:var(--green)}
+  .session-name{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px;line-height:1}
+  .session-meta{font-size:11px;color:var(--muted);margin-top:3px}
+  .sess-icon{font-size:44px;opacity:.7}
+
+  .muscle-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;margin-top:18px;padding-bottom:5px;border-bottom:1px solid var(--border)}
+
+  .ex-row{display:flex;align-items:flex-start;justify-content:space-between;padding:13px 13px;border-radius:13px;margin-bottom:5px;gap:8px;cursor:pointer;border:1px solid transparent;background:var(--surface);transition:background .15s,border-color .15s}
+  .ex-row:active{transform:scale(.99)}
+  .ex-row.focused{background:var(--surface-focus)}
+  .s-a .ex-row.focused{border-color:rgba(232,255,71,.4)}
+  .s-b .ex-row.focused{border-color:rgba(255,107,53,.4)}
+  .s-c .ex-row.focused{border-color:rgba(78,205,196,.4)}
+
+  .ex-left{flex:1}
+  .ex-name{font-size:13px;font-weight:500}
+  .ex-warm{font-size:12px;font-weight:400;color:var(--muted)}
+  .focus-badge{display:none;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:3px}
+  .ex-row.focused .focus-badge{display:inline-block}
+  .s-a .focus-badge{color:var(--accent)}
+  .s-b .focus-badge{color:var(--accent2)}
+  .s-c .focus-badge{color:var(--accent3)}
+
+  .ex-right{text-align:right;flex-shrink:0}
+  .ex-sets{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px}
+  .s-a .ex-sets{color:var(--accent)}
+  .s-b .ex-sets{color:var(--accent2)}
+  .s-c .ex-sets{color:var(--accent3)}
+  .ex-charge{font-size:10px;color:var(--muted);margin-top:2px}
+  .ex-rest{font-size:9px;color:var(--accent3);margin-top:2px}
+
+  .timer-bar{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;gap:9px;z-index:200}
+
+  .set-ctr{display:flex;flex-direction:column;align-items:center;min-width:42px}
+  .set-num{font-family:'Bebas Neue',sans-serif;font-size:32px;line-height:1;color:var(--muted);transition:color .2s}
+  .set-num.on{color:var(--accent)}
+  .set-of{font-family:'Bebas Neue',sans-serif;font-size:10px;color:var(--muted)}
+  .set-lbl{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+
+  .divider{width:1px;height:42px;background:var(--border);flex-shrink:0}
+
+  .timer-disp{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--accent);letter-spacing:3px;min-width:72px;text-align:center}
+  .timer-disp.warn{color:var(--accent2)}
+  .timer-disp.done{color:var(--green)}
+
+  .presets{display:flex;gap:5px}
+  .pre-btn{padding:7px 9px;border:1px solid var(--border);border-radius:9px;background:var(--surface2);color:var(--muted);font-size:10px;font-weight:600;cursor:pointer;transition:all .15s}
+  .pre-btn:active{background:var(--accent);color:#0a0a0f;border-color:var(--accent)}
+
+  .go-btn{flex:1;padding:13px 8px;border:none;border-radius:13px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s}
+  .go-btn:active{transform:scale(.97)}
+  .btn-go{background:var(--accent);color:#0a0a0f}
+  .btn-stop{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+
+  .today-card{background:var(--surface);border:1px solid rgba(232,255,71,.4);border-radius:18px;padding:18px;margin-bottom:16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between}
+  .info-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px}
+  .info-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+  .info-body{font-size:12px;color:var(--muted);line-height:1.6}
+
+  .week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:20px}
+  .day-cell{aspect-ratio:1;border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--border);font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;gap:2px}
+  .day-cell.has-s{border-color:var(--accent);background:rgba(232,255,71,.05)}
+  .day-cell.has-s .dt{color:var(--accent);font-family:'Bebas Neue',sans-serif;font-size:13px}
+  .day-cell.rest{opacity:.4}
+  .day-cell.tfl-d{border-color:var(--green);background:rgba(46,213,115,.05)}
+  .day-cell.tfl-d .dt{color:var(--green);font-family:'Bebas Neue',sans-serif;font-size:10px}
+
+  .macro-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:12px}
+  .macro-title{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+  .macro-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .macro-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+  .macro-info{flex:1}
+  .macro-name{font-size:12px;font-weight:600}
+  .macro-sub{font-size:10px;color:var(--muted);margin-top:1px}
+  .macro-val{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--accent)}
+  .bar-wrap{height:3px;background:var(--surface2);border-radius:2px;margin-top:5px;overflow:hidden}
+  .bar{height:100%;border-radius:2px}
+
+  .tfl-card{background:var(--surface);border:1px solid rgba(46,213,115,.3);border-radius:18px;padding:16px;margin-bottom:12px}
+  .tfl-n{font-family:'Bebas Neue',sans-serif;font-size:36px;color:rgba(46,213,115,.2);line-height:1;margin-bottom:3px}
+  .tfl-name{font-size:14px;font-weight:600;margin-bottom:3px}
+  .tfl-detail{font-size:11px;color:var(--muted)}
+  .tfl-target{font-size:10px;color:var(--green);margin-top:5px;font-weight:500}
+  .warn-card{background:rgba(255,71,87,.08);border:1px solid rgba(255,71,87,.3);border-radius:14px;padding:14px;margin-bottom:12px}
+  .warn-title{font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+  .warn-row{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:12px;color:var(--muted)}
+  .warn-row::before{content:"⚠️";font-size:12px}
+
+  @keyframes fadeIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+  @keyframes flash{0%{transform:scale(1.4)}100%{transform:scale(1)}}
+  .pulse{animation:pulse 1s ease infinite}
+  .set-flash{animation:flash .3s ease}
 </style>
 </head>
 <body>
 
 <header class="app-header">
   <div class="app-title">MYGYM</div>
-  <div class="profile-badge">
-    <span>182cm</span> · <span>74kg</span> · <span>30 ans</span>
-  </div>
+  <div class="profile-badge"><span>182cm</span> · <span>74kg</span> · <span>30 ans</span></div>
 </header>
 
 <nav class="nav-tabs">
-  <button class="nav-tab active" onclick="showPage('home')">🏠 Accueil</button>
-  <button class="nav-tab" onclick="showPage('seances')">💪 Séances</button>
-  <button class="nav-tab" onclick="showPage('tfl')">🦵 TFL</button>
-  <button class="nav-tab" onclick="showPage('planning')">📅 Planning</button>
-  <button class="nav-tab" onclick="showPage('nutrition')">🥗 Nutrition</button>
+  <button class="nav-tab active" onclick="showPage('home',this)">🏠 Accueil</button>
+  <button class="nav-tab" onclick="showPage('seances',this)">💪 Séances</button>
+  <button class="nav-tab" onclick="showPage('tfl',this)">🦵 TFL</button>
+  <button class="nav-tab" onclick="showPage('planning',this)">📅 Planning</button>
+  <button class="nav-tab" onclick="showPage('nutrition',this)">🥗 Nutrition</button>
 </nav>
+
+<div class="sub-nav" id="sub-nav">
+  <button class="sub-tab act-a" onclick="showSeance('a',this)">Pecs · Épaules · Triceps</button>
+  <button class="sub-tab" onclick="showSeance('b',this)">Dos · Biceps</button>
+  <button class="sub-tab" onclick="showSeance('c',this)">Épaules · Bras</button>
+</div>
 
 <!-- HOME -->
 <div class="page active" id="page-home">
   <div class="hero-stats">
-    <div class="stat-card">
-      <div class="stat-value">3</div>
-      <div class="stat-label">Séances/sem</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value">74</div>
-      <div class="stat-label">Kg actuels</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value">3100</div>
-      <div class="stat-label">Kcal cible</div>
-    </div>
+    <div class="stat-card"><div class="stat-value">3</div><div class="stat-label">Séances/sem</div></div>
+    <div class="stat-card"><div class="stat-value">74</div><div class="stat-label">Kg actuels</div></div>
+    <div class="stat-card"><div class="stat-value">3100</div><div class="stat-label">Kcal cible</div></div>
   </div>
-
   <div class="section-title">PROGRAMME DU JOUR</div>
-
-  <div id="today-card" class="session-card" style="border-color: rgba(232,255,71,0.4)">
-    <div class="session-card-header">
-      <div>
-        <div class="session-tag tag-a">Aujourd'hui</div>
-        <div class="session-name" id="today-name">Séance A</div>
-        <div class="session-meta" id="today-meta">Pecs · Épaules · Triceps</div>
-      </div>
-      <div class="session-icon">🔥</div>
+  <div class="today-card" onclick="goToday()">
+    <div>
+      <div class="session-tag tag-a" id="today-tag">Aujourd'hui</div>
+      <div class="session-name" id="today-name">Pecs · Épaules · Triceps</div>
+      <div class="session-meta" id="today-meta">~65 min</div>
     </div>
+    <div style="font-size:34px;opacity:.8">🔥</div>
   </div>
-
   <div class="section-title">RAPPELS</div>
-
-  <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;">
-    <div style="font-size:12px;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">💡 Objectif masse</div>
-    <div style="font-size:13px;color:var(--text-muted);line-height:1.6;">Profil longiligne → mange plus que tu ne le penses. Vise <strong style="color:var(--text)">2900–3100 kcal/jour</strong> avec <strong style="color:var(--text)">~150g de protéines</strong>.</div>
-  </div>
-
-  <div style="background:var(--surface);border:1px solid rgba(46,213,115,0.3);border-radius:16px;padding:16px;margin-bottom:12px;">
-    <div style="font-size:12px;color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">🦵 Genou droit</div>
-    <div style="font-size:13px;color:var(--text-muted);line-height:1.6;">Fais tes exercices TFL 3x/semaine. Evite le tapis incliné si douleur.</div>
-  </div>
+  <div class="info-card"><div class="info-title" style="color:var(--accent)">💡 Objectif masse</div><div class="info-body">Profil longiligne → vise <strong style="color:var(--text)">2900–3100 kcal/j</strong> avec <strong style="color:var(--text)">~150g protéines</strong>.</div></div>
+  <div class="info-card" style="border-color:rgba(46,213,115,.3)"><div class="info-title" style="color:var(--green)">🦵 Genou droit</div><div class="info-body">Fais tes exercices TFL 3x/semaine. Évite le tapis incliné si douleur.</div></div>
 </div>
 
-<!-- SEANCES -->
+<!-- SÉANCES -->
 <div class="page" id="page-seances">
 
-  <!-- SÉANCE A -->
-  <div class="session-card" onclick="toggleSession('a')">
-    <div class="session-card-header">
-      <div>
-        <div class="session-tag tag-a">Séance A</div>
-        <div class="session-name">Pecs + Épaules + Triceps</div>
-        <div class="session-meta">7 exercices · ~65 min</div>
-      </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-        <div class="session-icon">🏋️</div>
-        <div class="session-chevron" id="chevron-a">▼</div>
-      </div>
+  <!-- A -->
+  <div class="seance-page active s-a" id="seance-a">
+    <div class="session-hdr" style="background:rgba(232,255,71,.05);border:1px solid rgba(232,255,71,.2)">
+      <div><div class="session-tag tag-a">Séance A</div><div class="session-name">Pecs · Épaules · Triceps</div><div class="session-meta">7 exercices · ~65 min</div></div>
+      <div class="sess-icon">🏋️</div>
     </div>
-    <div class="session-body" id="body-a">
-      <div class="muscle-group">
-        <div class="muscle-label">🔥 Échauffement</div>
-        <div class="exercise-row">
-          <div class="exercise-name">Mobilité épaules + gainage</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">5 MIN</div>
-          </div>
-        </div>
-      </div>
-      <div class="muscle-group">
-        <div class="muscle-label">💪 Pectoraux</div>
-        <div class="exercise-row">
-          <div class="exercise-name">Développé couché altères (plat)</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">4 × 8-10</div>
-            <div class="exercise-charge">10 → 12 kg</div>
-            <div class="exercise-rest">⏱ 2 min</div>
-          </div>
-        </div>
-        <div class="exercise-row">
-          <div class="exercise-name">Développé incliné altères</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">3 × 10</div>
-            <div class="exercise-charge">10 → 12 kg</div>
-            <div class="exercise-rest">⏱ 2 min</div>
-          </div>
-        </div>
-        <div class="exercise-row">
-          <div class="exercise-name">Fly Pec</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">3 × 12</div>
-            <div class="exercise-charge">28 → 32 kg</div>
-            <div class="exercise-rest">⏱ 1 min 30</div>
-          </div>
-        </div>
-      </div>
-      <div class="muscle-group">
-        <div class="muscle-label">💪 Épaules</div>
-        <div class="exercise-row">
-          <div class="exercise-name">Développé militaire altères</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">4 × 10</div>
-            <div class="exercise-charge">8 → 10 kg</div>
-            <div class="exercise-rest">⏱ 2 min</div>
-          </div>
-        </div>
-        <div class="exercise-row">
-          <div class="exercise-name">Élévations latérales</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">3 × 15</div>
-            <div class="exercise-charge">6 → 8 kg</div>
-            <div class="exercise-rest">⏱ 1 min</div>
-          </div>
-        </div>
-      </div>
-      <div class="muscle-group">
-        <div class="muscle-label">💪 Triceps</div>
-        <div class="exercise-row">
-          <div class="exercise-name">Tirage triceps corde</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">4 × 12</div>
-            <div class="exercise-charge">à ajuster</div>
-            <div class="exercise-rest">⏱ 1 min 30</div>
-          </div>
-        </div>
-        <div class="exercise-row">
-          <div class="exercise-name">Dips banc lesté</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">3 × 10</div>
-            <div class="exercise-charge">poids corps</div>
-            <div class="exercise-rest">⏱ 1 min 30</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="muscle-label">🔥 Échauffement</div>
+    <div class="ex-row" onclick="focusEx(this,0)"><div class="ex-left"><div class="ex-warm">Mobilité épaules + gainage</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">5 MIN</div></div></div>
+    <div class="muscle-label">💪 Pectoraux</div>
+    <div class="ex-row" onclick="focusEx(this,4)"><div class="ex-left"><div class="ex-name">Développé couché altères (plat)</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×8-10</div><div class="ex-charge">10→12 kg</div><div class="ex-rest">⏱ 2 min</div></div></div>
+    <div class="ex-row" onclick="focusEx(this,3)"><div class="ex-left"><div class="ex-name">Développé incliné altères</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×10</div><div class="ex-charge">10→12 kg</div><div class="ex-rest">⏱ 2 min</div></div></div>
+    <div class="ex-row" onclick="focusEx(this,3)"><div class="ex-left"><div class="ex-name">Fly Pec</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×12</div><div class="ex-charge">28→32 kg</div><div class="ex-rest">⏱ 1'30</div></div></div>
+    <div class="muscle-label">💪 Épaules</div>
+    <div class="ex-row" onclick="focusEx(this,4)"><div class="ex-left"><div class="ex-name">Développé militaire altères</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×10</div><div class="ex-charge">8→10 kg</div><div class="ex-rest">⏱ 2 min</div></div></div>
+    <div class="ex-row" onclick="focusEx(this,3)"><div class="ex-left"><div class="ex-name">Élévations latérales</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×15</div><div class="ex-charge">6→8 kg</div><div class="ex-rest">⏱ 1 min</div></div></div>
+    <div class="muscle-label">💪 Triceps</div>
+    <div class="ex-row" onclick="focusEx(this,4)"><div class="ex-left"><div class="ex-name">Tirage triceps corde</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×12</div><div class="ex-charge">à ajuster</div><div class="ex-rest">⏱ 1'30</div></div></div>
+    <div class="ex-row" onclick="focusEx(this,3)"><div class="ex-left"><div class="ex-name">Dips banc lesté</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×10</div><div class="ex-charge">poids corps</div><div class="ex-rest">⏱ 1'30</div></div></div>
   </div>
 
-  <!-- SÉANCE B -->
-  <div class="session-card" onclick="toggleSession('b')">
-    <div class="session-card-header">
-      <div>
-        <div class="session-tag tag-b">Séance B</div>
-        <div class="session-name">Dos + Biceps</div>
-        <div class="session-meta">7 exercices · ~70 min</div>
-      </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-        <div class="session-icon">🔙</div>
-        <div class="session-chevron" id="chevron-b">▼</div>
-      </div>
+  <!-- B -->
+  <div class="seance-page s-b" id="seance-b">
+    <div class="session-hdr" style="background:rgba(255,107,53,.05);border:1px solid rgba(255,107,53,.2)">
+      <div><div class="session-tag tag-b">Séance B</div><div class="session-name">Dos · Biceps</div><div class="session-meta">7 exercices · ~70 min</div></div>
+      <div class="sess-icon">🔙</div>
     </div>
-    <div class="session-body" id="body-b">
-      <div class="muscle-group">
-        <div class="muscle-label">🔥 Échauffement</div>
-        <div class="exercise-row">
-          <div class="exercise-name">Rameur léger ou rotations bras</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">5 MIN</div>
-          </div>
-        </div>
-      </div>
-      <div class="muscle-group">
-        <div class="muscle-label">💪 Dos</div>
-        <div class="exercise-row">
-          <div class="exercise-name">Tirage vertical</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">4 × 10</div>
-            <div class="exercise-charge">23 → 27 kg</div>
-            <div class="exercise-rest">⏱ 2 min</div>
-          </div>
-        </div>
-        <div class="exercise-row">
-          <div class="exercise-name">Tirage horizontal</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">4 × 10</div>
-            <div class="exercise-charge">25 → 29 kg</div>
-            <div class="exercise-rest">⏱ 2 min</div>
-          </div>
-        </div>
-        <div class="exercise-row">
-          <div class="exercise-name">Tractions assistées machine</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">4 × 7</div>
-            <div class="exercise-charge">34 kg assist.</div>
-            <div class="exercise-rest">⏱ 2 min</div>
-          </div>
-        </div>
-        <div class="exercise-row">
-          <div class="exercise-name">Pull-over altère</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">3 × 12</div>
-            <div class="exercise-charge">12 → 14 kg</div>
-            <div class="exercise-rest">⏱ 1 min 30</div>
-          </div>
-        </div>
-      </div>
-      <div class="muscle-group">
-        <div class="muscle-label">💪 Biceps</div>
-        <div class="exercise-row">
-          <div class="exercise-name">Curl incliné altères</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">4 × 10</div>
-            <div class="exercise-charge">8 → 10 kg</div>
-            <div class="exercise-rest">⏱ 1 min 30</div>
-          </div>
-        </div>
-        <div class="exercise-row">
-          <div class="exercise-name">Curl marteau</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">3 × 12</div>
-            <div class="exercise-charge">8 → 10 kg</div>
-            <div class="exercise-rest">⏱ 1 min 30</div>
-          </div>
-        </div>
-        <div class="exercise-row">
-          <div class="exercise-name">Curl barre EZ</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">3 × 10</div>
-            <div class="exercise-charge">20 → 25 kg</div>
-            <div class="exercise-rest">⏱ 1 min 30</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="muscle-label">🔥 Échauffement</div>
+    <div class="ex-row" onclick="focusEx(this,0)"><div class="ex-left"><div class="ex-warm">Rameur léger ou rotations bras</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">5 MIN</div></div></div>
+    <div class="muscle-label">💪 Dos</div>
+    <div class="ex-row" onclick="focusEx(this,4)"><div class="ex-left"><div class="ex-name">Tirage vertical</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×10</div><div class="ex-charge">23→27 kg</div><div class="ex-rest">⏱ 2 min</div></div></div>
+    <div class="ex-row" onclick="focusEx(this,4)"><div class="ex-left"><div class="ex-name">Tirage horizontal</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×10</div><div class="ex-charge">25→29 kg</div><div class="ex-rest">⏱ 2 min</div></div></div>
+    <div class="ex-row" onclick="focusEx(this,4)"><div class="ex-left"><div class="ex-name">Tractions assistées machine</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×7</div><div class="ex-charge">34 kg assist.</div><div class="ex-rest">⏱ 2 min</div></div></div>
+    <div class="ex-row" onclick="focusEx(this,3)"><div class="ex-left"><div class="ex-name">Pull-over altère</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×12</div><div class="ex-charge">12→14 kg</div><div class="ex-rest">⏱ 1'30</div></div></div>
+    <div class="muscle-label">💪 Biceps</div>
+    <div class="ex-row" onclick="focusEx(this,4)"><div class="ex-left"><div class="ex-name">Curl incliné altères</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×10</div><div class="ex-charge">8→10 kg</div><div class="ex-rest">⏱ 1'30</div></div></div>
+    <div class="ex-row" onclick="focusEx(this,3)"><div class="ex-left"><div class="ex-name">Curl marteau</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×12</div><div class="ex-charge">8→10 kg</div><div class="ex-rest">⏱ 1'30</div></div></div>
+    <div class="ex-row" onclick="focusEx(this,3)"><div class="ex-left"><div class="ex-name">Curl barre EZ</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×10</div><div class="ex-charge">20→25 kg</div><div class="ex-rest">⏱ 1'30</div></div></div>
   </div>
 
-  <!-- SÉANCE C -->
-  <div class="session-card" onclick="toggleSession('c')">
-    <div class="session-card-header">
-      <div>
-        <div class="session-tag tag-c">Séance C</div>
-        <div class="session-name">Épaules + Bras</div>
-        <div class="session-meta">8 exercices · ~60 min</div>
-      </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-        <div class="session-icon">🎯</div>
-        <div class="session-chevron" id="chevron-c">▼</div>
-      </div>
+  <!-- C -->
+  <div class="seance-page s-c" id="seance-c">
+    <div class="session-hdr" style="background:rgba(78,205,196,.05);border:1px solid rgba(78,205,196,.2)">
+      <div><div class="session-tag tag-c">Séance C</div><div class="session-name">Épaules · Bras</div><div class="session-meta">8 exercices · ~60 min</div></div>
+      <div class="sess-icon">🎯</div>
     </div>
-    <div class="session-body" id="body-c">
-      <div class="muscle-group">
-        <div class="muscle-label">🔥 Échauffement</div>
-        <div class="exercise-row">
-          <div class="exercise-name">Mobilité + élévations légères</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">5 MIN</div>
-          </div>
-        </div>
-      </div>
-      <div class="muscle-group">
-        <div class="muscle-label">💪 Épaules</div>
-        <div class="exercise-row">
-          <div class="exercise-name">Développé militaire barre</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">4 × 8</div>
-            <div class="exercise-charge">à ajuster</div>
-            <div class="exercise-rest">⏱ 2 min</div>
-          </div>
-        </div>
-        <div class="exercise-row">
-          <div class="exercise-name">Élévations latérales</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">4 × 15</div>
-            <div class="exercise-charge">6 → 8 kg</div>
-            <div class="exercise-rest">⏱ 1 min</div>
-          </div>
-        </div>
-        <div class="exercise-row">
-          <div class="exercise-name">Élévations frontales</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">3 × 12</div>
-            <div class="exercise-charge">6 kg</div>
-            <div class="exercise-rest">⏱ 1 min</div>
-          </div>
-        </div>
-        <div class="exercise-row">
-          <div class="exercise-name">Oiseau (deltoïde post.)</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">3 × 15</div>
-            <div class="exercise-charge">6 → 8 kg</div>
-            <div class="exercise-rest">⏱ 1 min</div>
-          </div>
-        </div>
-      </div>
-      <div class="muscle-group">
-        <div class="muscle-label">💪 Biceps</div>
-        <div class="exercise-row">
-          <div class="exercise-name">Curl incliné altères</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">3 × 12</div>
-            <div class="exercise-charge">10 kg</div>
-            <div class="exercise-rest">⏱ 1 min 30</div>
-          </div>
-        </div>
-        <div class="exercise-row">
-          <div class="exercise-name">Curl concentration</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">3 × 12</div>
-            <div class="exercise-charge">10 kg</div>
-            <div class="exercise-rest">⏱ 1 min 30</div>
-          </div>
-        </div>
-      </div>
-      <div class="muscle-group">
-        <div class="muscle-label">💪 Triceps</div>
-        <div class="exercise-row">
-          <div class="exercise-name">Tirage corde triceps</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">4 × 12</div>
-            <div class="exercise-charge">à ajuster</div>
-            <div class="exercise-rest">⏱ 1 min 30</div>
-          </div>
-        </div>
-        <div class="exercise-row">
-          <div class="exercise-name">Extension triceps 1 bras</div>
-          <div class="exercise-detail">
-            <div class="exercise-sets">3 × 12</div>
-            <div class="exercise-charge">8 kg</div>
-            <div class="exercise-rest">⏱ 1 min 30</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="muscle-label">🔥 Échauffement</div>
+    <div class="ex-row" onclick="focusEx(this,0)"><div class="ex-left"><div class="ex-warm">Mobilité + élévations légères</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">5 MIN</div></div></div>
+    <div class="muscle-label">💪 Épaules</div>
+    <div class="ex-row" onclick="focusEx(this,4)"><div class="ex-left"><div class="ex-name">Développé militaire barre</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×8</div><div class="ex-charge">à ajuster</div><div class="ex-rest">⏱ 2 min</div></div></div>
+    <div class="ex-row" onclick="focusEx(this,4)"><div class="ex-left"><div class="ex-name">Élévations latérales</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×15</div><div class="ex-charge">6→8 kg</div><div class="ex-rest">⏱ 1 min</div></div></div>
+    <div class="ex-row" onclick="focusEx(this,3)"><div class="ex-left"><div class="ex-name">Élévations frontales</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×12</div><div class="ex-charge">6 kg</div><div class="ex-rest">⏱ 1 min</div></div></div>
+    <div class="ex-row" onclick="focusEx(this,3)"><div class="ex-left"><div class="ex-name">Oiseau (deltoïde post.)</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×15</div><div class="ex-charge">6→8 kg</div><div class="ex-rest">⏱ 1 min</div></div></div>
+    <div class="muscle-label">💪 Biceps</div>
+    <div class="ex-row" onclick="focusEx(this,3)"><div class="ex-left"><div class="ex-name">Curl incliné altères</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×12</div><div class="ex-charge">10 kg</div><div class="ex-rest">⏱ 1'30</div></div></div>
+    <div class="ex-row" onclick="focusEx(this,3)"><div class="ex-left"><div class="ex-name">Curl concentration</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×12</div><div class="ex-charge">10 kg</div><div class="ex-rest">⏱ 1'30</div></div></div>
+    <div class="muscle-label">💪 Triceps</div>
+    <div class="ex-row" onclick="focusEx(this,4)"><div class="ex-left"><div class="ex-name">Tirage corde triceps</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×12</div><div class="ex-charge">à ajuster</div><div class="ex-rest">⏱ 1'30</div></div></div>
+    <div class="ex-row" onclick="focusEx(this,3)"><div class="ex-left"><div class="ex-name">Extension triceps 1 bras</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×12</div><div class="ex-charge">8 kg</div><div class="ex-rest">⏱ 1'30</div></div></div>
   </div>
 
 </div>
@@ -845,343 +262,233 @@
 <!-- TFL -->
 <div class="page" id="page-tfl">
   <div class="section-title">RENFO TFL — 3x/SEMAINE</div>
-  <div style="font-size:13px;color:var(--text-muted);margin-bottom:20px;line-height:1.6;">15–20 min · Faisable à la maison · Objectif : décharger la bandelette en renforçant fessiers et stabilisateurs de hanche</div>
-
-  <div class="tfl-card">
-    <div class="tfl-number">01</div>
-    <div class="tfl-name">Abduction hanche côté allongé</div>
-    <div class="tfl-detail">3 × 20 reps · Lent et contrôlé · Pied en légère rotation interne</div>
-    <div class="tfl-target">🎯 Fessier moyen</div>
-  </div>
-
-  <div class="tfl-card">
-    <div class="tfl-number">02</div>
-    <div class="tfl-name">Clamshell avec élastique</div>
-    <div class="tfl-detail">3 × 20 reps · Élastique au-dessus des genoux · Chaque côté</div>
-    <div class="tfl-target">🎯 Fessier moyen + profond</div>
-  </div>
-
-  <div class="tfl-card">
-    <div class="tfl-number">03</div>
-    <div class="tfl-name">Pont fessier unilatéral</div>
-    <div class="tfl-detail">3 × 15 reps · Maintien 2 sec en haut · Chaque côté</div>
-    <div class="tfl-target">🎯 Grand fessier + stabilisation genou</div>
-  </div>
-
-  <div class="tfl-card">
-    <div class="tfl-number">04</div>
-    <div class="tfl-name">Squat latéral avec élastique</div>
-    <div class="tfl-detail">3 × 15 pas dans chaque sens · Dos droit · Genoux dans l'axe</div>
-    <div class="tfl-target">🎯 Fessier moyen + TFL dynamique</div>
-  </div>
-
-  <div class="tfl-card">
-    <div class="tfl-number">05</div>
-    <div class="tfl-name">Étirement TFL</div>
-    <div class="tfl-detail">3 × 45 sec · Jambe croisée derrière + inclinaison latérale opposée · Chaque côté</div>
-    <div class="tfl-target">🎯 Relâchement bandelette</div>
-  </div>
-
-  <div class="warning-card">
-    <div class="warning-title">⚠️ À éviter avec l'essuie-glace</div>
-    <div class="warning-row">Tapis incliné prolongé</div>
-    <div class="warning-row">Course sur terrain penché</div>
-    <div class="warning-row">Vélo selle trop basse</div>
-    <div class="warning-row">Squats profonds si douleur</div>
-  </div>
+  <div style="font-size:12px;color:var(--muted);margin-bottom:18px;line-height:1.6">15–20 min · À la maison · Objectif : décharger la bandelette</div>
+  <div class="tfl-card"><div class="tfl-n">01</div><div class="tfl-name">Abduction hanche côté allongé</div><div class="tfl-detail">3×20 reps · Lent et contrôlé · Pied en légère rotation interne</div><div class="tfl-target">🎯 Fessier moyen</div></div>
+  <div class="tfl-card"><div class="tfl-n">02</div><div class="tfl-name">Clamshell avec élastique</div><div class="tfl-detail">3×20 reps · Élastique au-dessus des genoux · Chaque côté</div><div class="tfl-target">🎯 Fessier moyen + profond</div></div>
+  <div class="tfl-card"><div class="tfl-n">03</div><div class="tfl-name">Pont fessier unilatéral</div><div class="tfl-detail">3×15 reps · Maintien 2 sec en haut · Chaque côté</div><div class="tfl-target">🎯 Grand fessier + stabilisation genou</div></div>
+  <div class="tfl-card"><div class="tfl-n">04</div><div class="tfl-name">Squat latéral avec élastique</div><div class="tfl-detail">3×15 pas dans chaque sens · Genoux dans l'axe</div><div class="tfl-target">🎯 Fessier moyen + TFL dynamique</div></div>
+  <div class="tfl-card"><div class="tfl-n">05</div><div class="tfl-name">Étirement TFL</div><div class="tfl-detail">3×45 sec · Jambe croisée + inclinaison latérale opposée · Chaque côté</div><div class="tfl-target">🎯 Relâchement bandelette</div></div>
+  <div class="warn-card"><div class="warn-title">⚠️ À éviter</div><div class="warn-row">Tapis incliné prolongé</div><div class="warn-row">Course sur terrain penché</div><div class="warn-row">Vélo selle trop basse</div><div class="warn-row">Squats profonds si douleur</div></div>
 </div>
 
 <!-- PLANNING -->
 <div class="page" id="page-planning">
   <div class="section-title">SEMAINE TYPE</div>
-
   <div class="week-grid">
-    <div class="day-cell has-session">
-      <span>Lun</span>
-      <span class="day-type">A</span>
-    </div>
-    <div class="day-cell tfl-day">
-      <span>Mar</span>
-      <span class="day-type">TFL</span>
-    </div>
-    <div class="day-cell has-session">
-      <span>Mer</span>
-      <span class="day-type">B</span>
-    </div>
-    <div class="day-cell tfl-day">
-      <span>Jeu</span>
-      <span class="day-type">TFL</span>
-    </div>
-    <div class="day-cell has-session">
-      <span>Ven</span>
-      <span class="day-type">C</span>
-    </div>
-    <div class="day-cell tfl-day">
-      <span>Sam</span>
-      <span class="day-type">TFL</span>
-    </div>
-    <div class="day-cell rest-day">
-      <span>Dim</span>
-      <span style="font-size:14px;">😴</span>
-    </div>
+    <div class="day-cell has-s"><span>Lun</span><span class="dt">A</span></div>
+    <div class="day-cell tfl-d"><span>Mar</span><span class="dt">TFL</span></div>
+    <div class="day-cell has-s"><span>Mer</span><span class="dt">B</span></div>
+    <div class="day-cell tfl-d"><span>Jeu</span><span class="dt">TFL</span></div>
+    <div class="day-cell has-s"><span>Ven</span><span class="dt">C</span></div>
+    <div class="day-cell tfl-d"><span>Sam</span><span class="dt">TFL</span></div>
+    <div class="day-cell rest"><span>Dim</span><span style="font-size:13px">😴</span></div>
   </div>
-
-  <div style="display:flex;flex-direction:column;gap:12px;">
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div style="width:36px;height:36px;background:rgba(232,255,71,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);">A</div>
-        <div>
-          <div style="font-weight:600;font-size:14px;">Lundi — Séance A</div>
-          <div style="font-size:12px;color:var(--text-muted);">Pecs · Épaules · Triceps · ~65 min</div>
-        </div>
-      </div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div style="width:36px;height:36px;background:rgba(46,213,115,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;">🦵</div>
-        <div>
-          <div style="font-weight:600;font-size:14px;">Mardi — TFL</div>
-          <div style="font-size:12px;color:var(--text-muted);">Renfo genou · 15–20 min · À la maison</div>
-        </div>
-      </div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div style="width:36px;height:36px;background:rgba(255,107,53,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent2);">B</div>
-        <div>
-          <div style="font-weight:600;font-size:14px;">Mercredi — Séance B</div>
-          <div style="font-size:12px;color:var(--text-muted);">Dos · Biceps · ~70 min</div>
-        </div>
-      </div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div style="width:36px;height:36px;background:rgba(46,213,115,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;">🦵</div>
-        <div>
-          <div style="font-weight:600;font-size:14px;">Jeudi — TFL</div>
-          <div style="font-size:12px;color:var(--text-muted);">Renfo genou · 15–20 min · À la maison</div>
-        </div>
-      </div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div style="width:36px;height:36px;background:rgba(78,205,196,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent3);">C</div>
-        <div>
-          <div style="font-weight:600;font-size:14px;">Vendredi — Séance C</div>
-          <div style="font-size:12px;color:var(--text-muted);">Épaules · Bras · ~60 min</div>
-        </div>
-      </div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div style="width:36px;height:36px;background:rgba(46,213,115,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;">🦵</div>
-        <div>
-          <div style="font-weight:600;font-size:14px;">Samedi — TFL + Étirements</div>
-          <div style="font-size:12px;color:var(--text-muted);">Renfo genou + mobilité · 20 min</div>
-        </div>
-      </div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;opacity:0.5;">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div style="width:36px;height:36px;background:var(--surface2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;">😴</div>
-        <div>
-          <div style="font-weight:600;font-size:14px;">Dimanche — Repos</div>
-          <div style="font-size:12px;color:var(--text-muted);">Récupération · Le muscle se construit ici</div>
-        </div>
-      </div>
-    </div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px"><div style="display:flex;align-items:center;gap:10px"><div style="width:34px;height:34px;background:rgba(232,255,71,.15);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--accent)">A</div><div><div style="font-weight:600;font-size:13px">Lundi — Pecs · Épaules · Triceps</div><div style="font-size:11px;color:var(--muted)">~65 min</div></div></div></div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px"><div style="display:flex;align-items:center;gap:10px"><div style="width:34px;height:34px;background:rgba(46,213,115,.15);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px">🦵</div><div><div style="font-weight:600;font-size:13px">Mardi — TFL</div><div style="font-size:11px;color:var(--muted)">Renfo genou · 15–20 min · À la maison</div></div></div></div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px"><div style="display:flex;align-items:center;gap:10px"><div style="width:34px;height:34px;background:rgba(255,107,53,.15);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--accent2)">B</div><div><div style="font-weight:600;font-size:13px">Mercredi — Dos · Biceps</div><div style="font-size:11px;color:var(--muted)">~70 min</div></div></div></div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px"><div style="display:flex;align-items:center;gap:10px"><div style="width:34px;height:34px;background:rgba(46,213,115,.15);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px">🦵</div><div><div style="font-weight:600;font-size:13px">Jeudi — TFL</div><div style="font-size:11px;color:var(--muted)">Renfo genou · 15–20 min · À la maison</div></div></div></div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px"><div style="display:flex;align-items:center;gap:10px"><div style="width:34px;height:34px;background:rgba(78,205,196,.15);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--accent3)">C</div><div><div style="font-weight:600;font-size:13px">Vendredi — Épaules · Bras</div><div style="font-size:11px;color:var(--muted)">~60 min</div></div></div></div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px"><div style="display:flex;align-items:center;gap:10px"><div style="width:34px;height:34px;background:rgba(46,213,115,.15);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px">🦵</div><div><div style="font-weight:600;font-size:13px">Samedi — TFL + Étirements</div><div style="font-size:11px;color:var(--muted)">Renfo + mobilité · 20 min</div></div></div></div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;opacity:.5"><div style="display:flex;align-items:center;gap:10px"><div style="width:34px;height:34px;background:var(--surface2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px">😴</div><div><div style="font-weight:600;font-size:13px">Dimanche — Repos</div><div style="font-size:11px;color:var(--muted)">Récupération · Le muscle se construit ici</div></div></div></div>
   </div>
 </div>
 
 <!-- NUTRITION -->
 <div class="page" id="page-nutrition">
   <div class="section-title">NUTRITION — PRISE DE MASSE</div>
-
   <div class="macro-card">
     <div class="macro-title">Objectifs journaliers</div>
-
-    <div class="macro-row">
-      <div class="macro-icon" style="background:rgba(232,255,71,0.1);">🔥</div>
-      <div class="macro-info">
-        <div class="macro-name">Calories</div>
-        <div class="macro-sub">Maintenance ~2700 + surplus 300</div>
-        <div class="macro-bar-wrap">
-          <div class="macro-bar" style="width:85%;background:var(--accent);"></div>
-        </div>
-      </div>
-      <div class="macro-value">3000<span style="font-size:12px;color:var(--text-muted)"> kcal</span></div>
-    </div>
-
-    <div class="macro-row">
-      <div class="macro-icon" style="background:rgba(255,107,53,0.1);">🥩</div>
-      <div class="macro-info">
-        <div class="macro-name">Protéines</div>
-        <div class="macro-sub">2g / kg · Muscle & récupération</div>
-        <div class="macro-bar-wrap">
-          <div class="macro-bar" style="width:100%;background:var(--accent2);"></div>
-        </div>
-      </div>
-      <div class="macro-value">150<span style="font-size:12px;color:var(--text-muted)"> g</span></div>
-    </div>
-
-    <div class="macro-row">
-      <div class="macro-icon" style="background:rgba(78,205,196,0.1);">🍚</div>
-      <div class="macro-info">
-        <div class="macro-name">Glucides</div>
-        <div class="macro-sub">Énergie séance + récupération</div>
-        <div class="macro-bar-wrap">
-          <div class="macro-bar" style="width:90%;background:var(--accent3);"></div>
-        </div>
-      </div>
-      <div class="macro-value">350<span style="font-size:12px;color:var(--text-muted)"> g</span></div>
-    </div>
-
-    <div class="macro-row">
-      <div class="macro-icon" style="background:rgba(46,213,115,0.1);">🥑</div>
-      <div class="macro-info">
-        <div class="macro-name">Lipides</div>
-        <div class="macro-sub">Hormones · Oméga 3</div>
-        <div class="macro-bar-wrap">
-          <div class="macro-bar" style="width:70%;background:var(--green);"></div>
-        </div>
-      </div>
-      <div class="macro-value">80<span style="font-size:12px;color:var(--text-muted)"> g</span></div>
-    </div>
+    <div class="macro-row"><div class="macro-icon" style="background:rgba(232,255,71,.1)">🔥</div><div class="macro-info"><div class="macro-name">Calories</div><div class="macro-sub">Maintenance ~2700 + surplus 300</div><div class="bar-wrap"><div class="bar" style="width:85%;background:var(--accent)"></div></div></div><div class="macro-val">3000<span style="font-size:11px;color:var(--muted)"> kcal</span></div></div>
+    <div class="macro-row"><div class="macro-icon" style="background:rgba(255,107,53,.1)">🥩</div><div class="macro-info"><div class="macro-name">Protéines</div><div class="macro-sub">2g/kg · Muscle & récupération</div><div class="bar-wrap"><div class="bar" style="width:100%;background:var(--accent2)"></div></div></div><div class="macro-val">150<span style="font-size:11px;color:var(--muted)"> g</span></div></div>
+    <div class="macro-row"><div class="macro-icon" style="background:rgba(78,205,196,.1)">🍚</div><div class="macro-info"><div class="macro-name">Glucides</div><div class="macro-sub">Énergie séance + récupération</div><div class="bar-wrap"><div class="bar" style="width:90%;background:var(--accent3)"></div></div></div><div class="macro-val">350<span style="font-size:11px;color:var(--muted)"> g</span></div></div>
+    <div class="macro-row"><div class="macro-icon" style="background:rgba(46,213,115,.1)">🥑</div><div class="macro-info"><div class="macro-name">Lipides</div><div class="macro-sub">Hormones · Oméga 3</div><div class="bar-wrap"><div class="bar" style="width:70%;background:var(--green)"></div></div></div><div class="macro-val">80<span style="font-size:11px;color:var(--muted)"> g</span></div></div>
   </div>
-
   <div class="macro-card">
     <div class="macro-title">Sources recommandées</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-      <div style="background:var(--surface2);border-radius:12px;padding:12px;">
-        <div style="font-size:11px;color:var(--accent2);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Protéines</div>
-        <div style="font-size:12px;color:var(--text-muted);line-height:1.8;">Poulet · Thon · Œufs · Fromage blanc · Whey</div>
-      </div>
-      <div style="background:var(--surface2);border-radius:12px;padding:12px;">
-        <div style="font-size:11px;color:var(--accent3);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Glucides</div>
-        <div style="font-size:12px;color:var(--text-muted);line-height:1.8;">Riz · Pâtes · Avoine · Pain complet · Patate douce</div>
-      </div>
-      <div style="background:var(--surface2);border-radius:12px;padding:12px;">
-        <div style="font-size:11px;color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Lipides</div>
-        <div style="font-size:12px;color:var(--text-muted);line-height:1.8;">Avocat · Noix · Huile olive · Œufs</div>
-      </div>
-      <div style="background:var(--surface2);border-radius:12px;padding:12px;">
-        <div style="font-size:11px;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Timing</div>
-        <div style="font-size:12px;color:var(--text-muted);line-height:1.8;">Glucides 1h30 avant séance · Protéines après</div>
-      </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div style="background:var(--surface2);border-radius:10px;padding:10px"><div style="font-size:10px;color:var(--accent2);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Protéines</div><div style="font-size:11px;color:var(--muted);line-height:1.7">Poulet · Thon · Œufs · Fromage blanc · Whey</div></div>
+      <div style="background:var(--surface2);border-radius:10px;padding:10px"><div style="font-size:10px;color:var(--accent3);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Glucides</div><div style="font-size:11px;color:var(--muted);line-height:1.7">Riz · Pâtes · Avoine · Pain complet · Patate douce</div></div>
+      <div style="background:var(--surface2);border-radius:10px;padding:10px"><div style="font-size:10px;color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Lipides</div><div style="font-size:11px;color:var(--muted);line-height:1.7">Avocat · Noix · Huile olive · Œufs</div></div>
+      <div style="background:var(--surface2);border-radius:10px;padding:10px"><div style="font-size:10px;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Timing</div><div style="font-size:11px;color:var(--muted);line-height:1.7">Glucides 1h30 avant · Protéines après</div></div>
     </div>
-  </div>
-
-  <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;">
-    <div style="font-size:12px;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">💡 Profil longiligne</div>
-    <div style="font-size:13px;color:var(--text-muted);line-height:1.7;">Tu brûles naturellement plus que la moyenne. Si tu ne prends pas de poids après 2-3 semaines, augmente de <strong style="color:var(--text)">+200 kcal</strong> et observe.</div>
   </div>
 </div>
 
-<!-- TIMER BAR -->
+<!-- BOTTOM BAR -->
 <div class="timer-bar">
-  <div class="timer-display" id="timer-display">0:00</div>
-  <div class="timer-presets">
-    <button class="preset-btn" onclick="setTimer(60)">1'</button>
-    <button class="preset-btn" onclick="setTimer(90)">1'30</button>
-    <button class="preset-btn" onclick="setTimer(120)">2'</button>
+  <div class="set-ctr">
+    <div class="set-num" id="set-num">1</div>
+    <div class="set-of" id="set-of">/—</div>
+    <div class="set-lbl">Série</div>
   </div>
-  <button class="timer-btn btn-start" id="timer-btn" onclick="toggleTimer()">GO</button>
+  <div class="divider"></div>
+  <div class="timer-disp" id="t-disp">0:00</div>
+  <div class="presets">
+    <button class="pre-btn" onclick="setTimer(60)">1'</button>
+    <button class="pre-btn" onclick="setTimer(90)">1'30</button>
+    <button class="pre-btn" onclick="setTimer(120)">2'</button>
+  </div>
+  <button class="go-btn btn-go" id="go-btn" onclick="toggleTimer()">GO</button>
 </div>
 
 <script>
-// Navigation
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  event.currentTarget.classList.add('active');
+// AUDIO
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function beep(freq, duration, vol) {
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.type = 'sine';
+  osc.frequency.value = freq;
+  gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+  osc.start(audioCtx.currentTime);
+  osc.stop(audioCtx.currentTime + duration);
 }
 
-// Toggle session
-function toggleSession(id) {
-  const body = document.getElementById('body-' + id);
-  const chevron = document.getElementById('chevron-' + id);
-  const isOpen = body.classList.contains('open');
-  document.querySelectorAll('.session-body').forEach(b => b.classList.remove('open'));
-  document.querySelectorAll('.session-chevron').forEach(c => c.textContent = '▼');
-  if (!isOpen) {
-    body.classList.add('open');
-    chevron.textContent = '▲';
+// bips 3,2,1 = 440Hz court ; bip 0 = 880Hz plus long
+function playCountdownBeep(sec) {
+  if (sec === 3 || sec === 2 || sec === 1) beep(440, 0.15, 0.4);
+  if (sec === 0) beep(880, 0.5, 0.6);
+}
+
+// NAV
+function showPage(name, btn) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  btn.classList.add('active');
+  document.getElementById('sub-nav').classList[name==='seances'?'add':'remove']('visible');
+}
+
+// SUB TABS
+function showSeance(id, btn) {
+  document.querySelectorAll('.seance-page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sub-tab').forEach(t=>t.classList.remove('act-a','act-b','act-c'));
+  document.getElementById('seance-'+id).classList.add('active');
+  btn.classList.add('act-'+id);
+  clearFocus(); resetSet();
+}
+
+// FOCUS
+let focRow=null, focMax=0;
+function focusEx(row, max) {
+  if(focRow===row){row.classList.remove('focused');focRow=null;focMax=0;resetSet();return}
+  if(focRow) focRow.classList.remove('focused');
+  row.classList.add('focused'); focRow=row; focMax=max;
+  setNum(1,max);
+  row.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function clearFocus(){if(focRow){focRow.classList.remove('focused');focRow=null;focMax=0;}}
+
+// SET COUNTER
+let curSet=1;
+function setNum(n, max) {
+  curSet=n;
+  const el=document.getElementById('set-num');
+  el.textContent=n; el.classList.add('on','set-flash');
+  setTimeout(()=>el.classList.remove('set-flash'),300);
+  document.getElementById('set-of').textContent=max>0?'/'+max:'/—';
+}
+function resetSet(){
+  curSet=1;
+  const el=document.getElementById('set-num');
+  el.textContent='1'; el.classList.remove('on');
+  document.getElementById('set-of').textContent='/—';
+}
+function nextSet() {
+  if(!focRow||focMax===0) return;
+  if(curSet<focMax){ setNum(curSet+1,focMax); }
+  else {
+    const el=document.getElementById('set-num');
+    el.textContent='✓'; el.style.color='var(--green)';
+    setTimeout(()=>{el.style.color='';setNum(1,focMax);},1500);
   }
 }
 
-// Timer
-let timerInterval = null;
-let timerSeconds = 0;
-let timerRunning = false;
-let timerMax = 120;
+// TIMER
+let tInt=null, tSec=0, tRun=false, tMax=120;
 
-function setTimer(seconds) {
-  clearInterval(timerInterval);
-  timerRunning = false;
-  timerSeconds = seconds;
-  timerMax = seconds;
-  updateTimerDisplay();
-  document.getElementById('timer-btn').textContent = 'GO';
-  document.getElementById('timer-btn').className = 'timer-btn btn-start';
-  document.getElementById('timer-display').className = 'timer-display';
+function setTimer(s){
+  clearInterval(tInt); tRun=false; tSec=s; tMax=s;
+  updDisp();
+  document.getElementById('go-btn').textContent='GO';
+  document.getElementById('go-btn').className='go-btn btn-go';
+  document.getElementById('t-disp').className='timer-disp';
 }
 
-function toggleTimer() {
-  if (timerRunning) {
-    clearInterval(timerInterval);
-    timerRunning = false;
-    document.getElementById('timer-btn').textContent = 'GO';
-    document.getElementById('timer-btn').className = 'timer-btn btn-start';
+function toggleTimer(){
+  // Unlock AudioContext on user gesture
+  if(audioCtx.state==='suspended') audioCtx.resume();
+
+  if(tRun){
+    clearInterval(tInt); tRun=false;
+    document.getElementById('go-btn').textContent='GO';
+    document.getElementById('go-btn').className='go-btn btn-go';
   } else {
-    if (timerSeconds <= 0) timerSeconds = timerMax;
-    timerRunning = true;
-    document.getElementById('timer-btn').textContent = 'STOP';
-    document.getElementById('timer-btn').className = 'timer-btn btn-stop';
-    timerInterval = setInterval(() => {
-      timerSeconds--;
-      updateTimerDisplay();
-      if (timerSeconds <= 10) document.getElementById('timer-display').className = 'timer-display warning pulse';
-      if (timerSeconds <= 0) {
-        clearInterval(timerInterval);
-        timerRunning = false;
-        document.getElementById('timer-display').className = 'timer-display done';
-        document.getElementById('timer-display').textContent = '✓';
-        document.getElementById('timer-btn').textContent = 'GO';
-        document.getElementById('timer-btn').className = 'timer-btn btn-start';
-        if ('vibrate' in navigator) navigator.vibrate([200, 100, 200]);
+    if(tSec<=0) tSec=tMax;
+    tRun=true;
+    document.getElementById('go-btn').textContent='STOP';
+    document.getElementById('go-btn').className='go-btn btn-stop';
+    tInt=setInterval(()=>{
+      tSec--;
+      updDisp();
+
+      // Countdown bips : 3, 2, 1, 0
+      if(tSec<=3) playCountdownBeep(tSec);
+
+      if(tSec<=10&&tSec>0) document.getElementById('t-disp').className='timer-disp warn pulse';
+
+      if(tSec<=0){
+        clearInterval(tInt); tRun=false;
+        document.getElementById('t-disp').className='timer-disp done';
+        document.getElementById('t-disp').textContent='✓';
+        document.getElementById('go-btn').textContent='GO';
+        document.getElementById('go-btn').className='go-btn btn-go';
+        if('vibrate' in navigator) navigator.vibrate([200,100,200]);
+        setTimeout(()=>{
+          nextSet();
+          tSec=tMax; updDisp();
+          document.getElementById('t-disp').className='timer-disp';
+        },900);
       }
-    }, 1000);
+    },1000);
   }
 }
 
-function updateTimerDisplay() {
-  const m = Math.floor(timerSeconds / 60);
-  const s = timerSeconds % 60;
-  document.getElementById('timer-display').textContent = m + ':' + (s < 10 ? '0' : '') + s;
+function updDisp(){
+  const m=Math.floor(tSec/60), s=tSec%60;
+  document.getElementById('t-disp').textContent=m+':'+(s<10?'0':'')+s;
 }
 
-// Today card
-const days = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
-const schedule = {
-  1: { name: 'Séance A', meta: 'Pecs · Épaules · Triceps · ~65 min', tag: 'tag-a' },
-  2: { name: 'TFL', meta: 'Renfo genou · 15–20 min · À la maison', tag: 'tag-tfl' },
-  3: { name: 'Séance B', meta: 'Dos · Biceps · ~70 min', tag: 'tag-b' },
-  4: { name: 'TFL', meta: 'Renfo genou · 15–20 min · À la maison', tag: 'tag-tfl' },
-  5: { name: 'Séance C', meta: 'Épaules · Bras · ~60 min', tag: 'tag-c' },
-  6: { name: 'TFL + Étirements', meta: 'Renfo + mobilité · 20 min', tag: 'tag-tfl' },
-  0: { name: 'Repos 😴', meta: 'Récupération — le muscle se construit la nuit', tag: '' }
+// TODAY
+const days=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+const sched={
+  1:{name:'Pecs · Épaules · Triceps',meta:'~65 min',tag:'tag-a',page:'seances',sea:'a'},
+  2:{name:'TFL',meta:'15–20 min · À la maison',tag:'tag-tfl',page:'tfl',sea:null},
+  3:{name:'Dos · Biceps',meta:'~70 min',tag:'tag-b',page:'seances',sea:'b'},
+  4:{name:'TFL',meta:'15–20 min · À la maison',tag:'tag-tfl',page:'tfl',sea:null},
+  5:{name:'Épaules · Bras',meta:'~60 min',tag:'tag-c',page:'seances',sea:'c'},
+  6:{name:'TFL + Étirements',meta:'20 min',tag:'tag-tfl',page:'tfl',sea:null},
+  0:{name:'Repos 😴',meta:'Récupération',tag:'',page:null,sea:null}
 };
-const today = new Date().getDay();
-const s = schedule[today];
-if (s) {
-  document.getElementById('today-name').textContent = s.name;
-  document.getElementById('today-meta').textContent = s.meta;
-  const tagEl = document.querySelector('#today-card .session-tag');
-  tagEl.className = 'session-tag ' + s.tag;
-  tagEl.textContent = days[today];
+const td=new Date().getDay(), ts=sched[td];
+if(ts){
+  document.getElementById('today-name').textContent=ts.name;
+  document.getElementById('today-meta').textContent=ts.meta;
+  const t=document.getElementById('today-tag');
+  t.className='session-tag '+ts.tag; t.textContent=days[td];
+}
+function goToday(){
+  if(!ts||!ts.page) return;
+  const btns=document.querySelectorAll('.nav-tab');
+  const pages=['home','seances','tfl','planning','nutrition'];
+  const i=pages.indexOf(ts.page);
+  if(i>=0){ showPage(ts.page,btns[i]); if(ts.sea){const sb=document.querySelectorAll('.sub-tab');const si=['a','b','c'].indexOf(ts.sea);if(si>=0) showSeance(ts.sea,sb[si]);}}
 }
 </script>
-
 </body>
 </html>
