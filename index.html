@@ -63,12 +63,11 @@
 
   .muscle-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;margin-top:18px;padding-bottom:5px;border-bottom:1px solid var(--border)}
 
-  .ex-row{display:flex;align-items:flex-start;justify-content:space-between;padding:14px 13px;border-radius:13px;margin-bottom:5px;gap:8px;cursor:pointer;border:1px solid transparent;background:var(--surface);transition:background .15s,border-color .15s;user-select:none;-webkit-user-select:none}
+  .ex-row{display:flex;align-items:flex-start;justify-content:space-between;padding:14px 13px;border-radius:13px;margin-bottom:5px;gap:8px;border:1px solid transparent;background:var(--surface);transition:background .15s,border-color .15s;user-select:none;-webkit-user-select:none}
   .ex-row.focused{background:var(--surface-focus)}
   .s-a .ex-row.focused{border-color:rgba(232,255,71,.4)}
   .s-b .ex-row.focused{border-color:rgba(255,107,53,.4)}
   .s-c .ex-row.focused{border-color:rgba(78,205,196,.4)}
-  .ex-row.pressing{background:var(--surface2);transform:scale(.98)}
 
   .ex-left{flex:1}
   .ex-name{font-size:14px;font-weight:600}
@@ -204,7 +203,6 @@
 
 <!-- SÉANCES -->
 <div class="page" id="page-seances">
-  <!-- A -->
   <div class="seance-page active s-a" id="seance-a">
     <div class="session-hdr" style="background:rgba(232,255,71,.05);border:1px solid rgba(232,255,71,.2)">
       <div><div class="session-tag tag-a">Séance A</div><div class="session-name">Pecs · Épaules · Triceps</div><div class="session-meta">7 exercices · ~65 min</div></div>
@@ -223,7 +221,6 @@
     <div class="ex-row" data-sets="4" data-reps="12" data-charge="20" data-rest="90"><div class="ex-left"><div class="ex-name">Tirage triceps corde</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×12</div><div class="ex-charge">20 kg</div><div class="ex-rest">⏱ 1'30</div></div></div>
     <div class="ex-row" data-sets="3" data-reps="10" data-charge="0" data-rest="90"><div class="ex-left"><div class="ex-name">Dips banc lesté</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×10</div><div class="ex-charge">poids corps</div><div class="ex-rest">⏱ 1'30</div></div></div>
   </div>
-  <!-- B -->
   <div class="seance-page s-b" id="seance-b">
     <div class="session-hdr" style="background:rgba(255,107,53,.05);border:1px solid rgba(255,107,53,.2)">
       <div><div class="session-tag tag-b">Séance B</div><div class="session-name">Dos · Biceps</div><div class="session-meta">7 exercices · ~70 min</div></div>
@@ -241,7 +238,6 @@
     <div class="ex-row" data-sets="3" data-reps="12" data-charge="8" data-rest="90"><div class="ex-left"><div class="ex-name">Curl marteau</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×12</div><div class="ex-charge">8 kg</div><div class="ex-rest">⏱ 1'30</div></div></div>
     <div class="ex-row" data-sets="3" data-reps="10" data-charge="20" data-rest="90"><div class="ex-left"><div class="ex-name">Curl barre EZ</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×10</div><div class="ex-charge">20 kg</div><div class="ex-rest">⏱ 1'30</div></div></div>
   </div>
-  <!-- C -->
   <div class="seance-page s-c" id="seance-c">
     <div class="session-hdr" style="background:rgba(78,205,196,.05);border:1px solid rgba(78,205,196,.2)">
       <div><div class="session-tag tag-c">Séance C</div><div class="session-name">Épaules · Bras</div><div class="session-meta">8 exercices · ~60 min</div></div>
@@ -342,38 +338,10 @@
     <div class="modal-title" id="modal-title">Modifier</div>
     <div class="modal-sub">Appuie sur + / − pour ajuster</div>
     <div class="modal-fields">
-      <div>
-        <div class="field-label">Séries</div>
-        <div class="field-row">
-          <button class="field-btn" onclick="adj('sets',-1)">−</button>
-          <div class="field-val" id="val-sets">4</div>
-          <button class="field-btn" onclick="adj('sets',1)">+</button>
-        </div>
-      </div>
-      <div>
-        <div class="field-label">Répétitions</div>
-        <div class="field-row">
-          <button class="field-btn" onclick="adj('reps',-1)">−</button>
-          <div class="field-val" id="val-reps">10</div>
-          <button class="field-btn" onclick="adj('reps',1)">+</button>
-        </div>
-      </div>
-      <div>
-        <div class="field-label">Charge (kg)</div>
-        <div class="field-row">
-          <button class="field-btn" onclick="adj('charge',-1)">−</button>
-          <div class="field-val" id="val-charge">10 kg</div>
-          <button class="field-btn" onclick="adj('charge',1)">+</button>
-        </div>
-      </div>
-      <div>
-        <div class="field-label">Repos</div>
-        <div class="field-row">
-          <button class="field-btn" onclick="adj('rest',-15)">−</button>
-          <div class="field-val" id="val-rest">2 min</div>
-          <button class="field-btn" onclick="adj('rest',15)">+</button>
-        </div>
-      </div>
+      <div><div class="field-label">Séries</div><div class="field-row"><button class="field-btn" onclick="adj('sets',-1)">−</button><div class="field-val" id="val-sets">4</div><button class="field-btn" onclick="adj('sets',1)">+</button></div></div>
+      <div><div class="field-label">Répétitions</div><div class="field-row"><button class="field-btn" onclick="adj('reps',-1)">−</button><div class="field-val" id="val-reps">10</div><button class="field-btn" onclick="adj('reps',1)">+</button></div></div>
+      <div><div class="field-label">Charge (kg)</div><div class="field-row"><button class="field-btn" onclick="adj('charge',-1)">−</button><div class="field-val" id="val-charge">10 kg</div><button class="field-btn" onclick="adj('charge',1)">+</button></div></div>
+      <div><div class="field-label">Repos</div><div class="field-row"><button class="field-btn" onclick="adj('rest',-15)">−</button><div class="field-val" id="val-rest">2 min</div><button class="field-btn" onclick="adj('rest',15)">+</button></div></div>
     </div>
     <div class="modal-actions">
       <button class="modal-cancel" onclick="closeModalBtn()">Annuler</button>
@@ -385,7 +353,7 @@
 <script>
 // AUDIO
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-function beep(freq,dur,vol){ const o=audioCtx.createOscillator(),g=audioCtx.createGain(); o.connect(g);g.connect(audioCtx.destination); o.type='sine';o.frequency.value=freq; g.gain.setValueAtTime(vol,audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+dur); o.start(audioCtx.currentTime);o.stop(audioCtx.currentTime+dur); }
+function beep(freq,dur,vol){ const o=audioCtx.createOscillator(),g=audioCtx.createGain(); o.connect(g);g.connect(audioCtx.destination); o.type='sine';o.frequency.value=freq; g.gain.setValueAtTime(vol,audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+dur); o.start();o.stop(audioCtx.currentTime+dur); }
 function playCountdownBeep(s){ if(s===3||s===2||s===1) beep(440,.15,.4); if(s===0) beep(880,.5,.6); }
 
 // NAV
@@ -403,65 +371,66 @@ function focusEx(row){
 }
 function clearFocus(){ if(focRow){ focRow.classList.remove('focused'); focRow=null; focMax=0; } }
 
-// LONG PRESS
-// Séparation claire : tap court = focus, appui long = modal
+// LONG PRESS — approche propre :
+// touchstart démarre le timer
+// touchend < 500ms = tap = focus
+// touchend >= 500ms = long press = modal (timer a déjà déclenché openModal)
+// touchmove > 10px = annulation
 function initLongPress(){
   document.querySelectorAll('.ex-row').forEach(row=>{
     if(parseInt(row.dataset.sets)===0) return;
 
-    let timer=null, startX=0, startY=0, didLongPress=false;
+    let timer=null, startX=0, startY=0, longFired=false;
 
-    const start = (x, y) => {
-      startX=x; startY=y; didLongPress=false;
-      row.classList.add('pressing');
-      timer = setTimeout(()=>{
-        didLongPress=true;
-        row.classList.remove('pressing');
+    row.addEventListener('touchstart', e=>{
+      const t=e.touches[0];
+      startX=t.clientX; startY=t.clientY;
+      longFired=false;
+      timer=setTimeout(()=>{
+        longFired=true;
         openModal(row);
       }, 600);
-    };
+    }, {passive:true});
 
-    const move = (x, y) => {
-      if(Math.abs(x-startX)>10 || Math.abs(y-startY)>10){
+    row.addEventListener('touchmove', e=>{
+      if(!timer) return;
+      const t=e.touches[0];
+      if(Math.abs(t.clientX-startX)>10 || Math.abs(t.clientY-startY)>10){
         clearTimeout(timer); timer=null;
-        row.classList.remove('pressing');
       }
-    };
+    }, {passive:true});
 
-    const end = () => {
+    row.addEventListener('touchend', ()=>{
       clearTimeout(timer); timer=null;
-      row.classList.remove('pressing');
-      if(!didLongPress) focusEx(row);
-      didLongPress=false;
-    };
+      // Si le long press n'a pas été déclenché = c'est un tap
+      if(!longFired) focusEx(row);
+      longFired=false;
+    });
 
-    const cancel = () => {
-      clearTimeout(timer); timer=null;
-      row.classList.remove('pressing');
-      didLongPress=false;
-    };
+    row.addEventListener('touchcancel', ()=>{
+      clearTimeout(timer); timer=null; longFired=false;
+    });
 
-    // Touch
-    row.addEventListener('touchstart', e=>{ start(e.touches[0].clientX, e.touches[0].clientY); }, {passive:true});
-    row.addEventListener('touchmove',  e=>{ move(e.touches[0].clientX, e.touches[0].clientY); }, {passive:true});
-    row.addEventListener('touchend',   end);
-    row.addEventListener('touchcancel',cancel);
-
-    // Mouse (desktop)
-    row.addEventListener('mousedown', e=>{ start(e.clientX, e.clientY); });
-    row.addEventListener('mousemove', e=>{ move(e.clientX, e.clientY); });
-    row.addEventListener('mouseup',   end);
-    row.addEventListener('mouseleave',cancel);
+    // Desktop
+    row.addEventListener('mousedown', e=>{
+      startX=e.clientX; startY=e.clientY; longFired=false;
+      timer=setTimeout(()=>{ longFired=true; openModal(row); }, 600);
+    });
+    row.addEventListener('mousemove', e=>{
+      if(!timer) return;
+      if(Math.abs(e.clientX-startX)>10||Math.abs(e.clientY-startY)>10){ clearTimeout(timer); timer=null; }
+    });
+    row.addEventListener('mouseup', ()=>{ clearTimeout(timer); timer=null; if(!longFired) focusEx(row); longFired=false; });
+    row.addEventListener('mouseleave', ()=>{ clearTimeout(timer); timer=null; longFired=false; });
   });
 }
 
 // MODAL
 let modalRow=null, mVals={sets:4,reps:10,charge:10,rest:120};
 function secToStr(s){ if(s<60) return s+'s'; const m=Math.floor(s/60),r=s%60; return r===0?m+' min':m+"'"+String(r).padStart(2,'0'); }
-
 function openModal(row){
   modalRow=row;
-  mVals={ sets:parseInt(row.dataset.sets)||4, reps:parseInt(row.dataset.reps)||10, charge:parseInt(row.dataset.charge)||0, rest:parseInt(row.dataset.rest)||120 };
+  mVals={sets:parseInt(row.dataset.sets)||4,reps:parseInt(row.dataset.reps)||10,charge:parseInt(row.dataset.charge)||0,rest:parseInt(row.dataset.rest)||120};
   document.getElementById('modal-title').textContent=row.querySelector('.ex-name')?.textContent||'Exercice';
   document.getElementById('val-sets').textContent=mVals.sets;
   document.getElementById('val-reps').textContent=mVals.reps;
@@ -469,14 +438,12 @@ function openModal(row){
   document.getElementById('val-rest').textContent=secToStr(mVals.rest);
   document.getElementById('modal-overlay').classList.add('open');
 }
-
 function adj(field,delta){
   if(field==='sets'){ mVals.sets=Math.max(1,mVals.sets+delta); document.getElementById('val-sets').textContent=mVals.sets; }
   else if(field==='reps'){ mVals.reps=Math.max(1,mVals.reps+delta); document.getElementById('val-reps').textContent=mVals.reps; }
   else if(field==='charge'){ mVals.charge=Math.max(0,mVals.charge+delta); document.getElementById('val-charge').textContent=mVals.charge===0?'poids corps':mVals.charge+' kg'; }
   else if(field==='rest'){ mVals.rest=Math.max(15,mVals.rest+delta); document.getElementById('val-rest').textContent=secToStr(mVals.rest); }
 }
-
 function saveModal(){
   if(!modalRow) return;
   modalRow.dataset.sets=mVals.sets; modalRow.dataset.reps=mVals.reps; modalRow.dataset.charge=mVals.charge; modalRow.dataset.rest=mVals.rest;
@@ -486,7 +453,6 @@ function saveModal(){
   if(focRow===modalRow){ focMax=mVals.sets; setNum(1,mVals.sets); }
   closeModalBtn();
 }
-
 function closeModal(e){ if(e.target===document.getElementById('modal-overlay')) closeModalBtn(); }
 function closeModalBtn(){ document.getElementById('modal-overlay').classList.remove('open'); modalRow=null; }
 
