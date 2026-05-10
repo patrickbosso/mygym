@@ -63,18 +63,14 @@
 
   .muscle-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;margin-top:18px;padding-bottom:5px;border-bottom:1px solid var(--border)}
 
-  /* Exercise row — tap zone + edit button séparés */
-  .ex-row{display:flex;align-items:center;border-radius:13px;margin-bottom:5px;border:1px solid transparent;background:var(--surface);transition:background .15s,border-color .15s;overflow:hidden}
+  .ex-row{display:flex;align-items:flex-start;justify-content:space-between;padding:14px 13px;border-radius:13px;margin-bottom:5px;gap:8px;border:1px solid transparent;background:var(--surface);transition:background .15s,border-color .15s;user-select:none;-webkit-user-select:none}
   .ex-row.focused{background:var(--surface-focus)}
   .s-a .ex-row.focused{border-color:rgba(232,255,71,.4)}
   .s-b .ex-row.focused{border-color:rgba(255,107,53,.4)}
   .s-c .ex-row.focused{border-color:rgba(78,205,196,.4)}
+  .ex-row.pressing{opacity:.7;transform:scale(.99)}
 
-  /* Zone tap principale */
-  .ex-tap{flex:1;display:flex;align-items:flex-start;justify-content:space-between;padding:14px 0 14px 13px;gap:8px;cursor:pointer;user-select:none;-webkit-user-select:none;min-width:0}
-  .ex-tap:active{opacity:.7}
-
-  .ex-left{flex:1;min-width:0}
+  .ex-left{flex:1}
   .ex-name{font-size:14px;font-weight:600}
   .ex-warm{font-size:13px;font-weight:400;color:var(--muted)}
   .focus-badge{display:none;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:3px}
@@ -82,7 +78,6 @@
   .s-a .focus-badge{color:var(--accent)}
   .s-b .focus-badge{color:var(--accent2)}
   .s-c .focus-badge{color:var(--accent3)}
-
   .ex-right{text-align:right;flex-shrink:0}
   .ex-sets{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px}
   .s-a .ex-sets{color:var(--accent)}
@@ -91,12 +86,6 @@
   .ex-charge{font-size:13px;color:var(--text);margin-top:3px;font-weight:500}
   .ex-rest{font-size:12px;color:var(--accent3);margin-top:3px;font-weight:500}
 
-  /* Bouton ✏️ edit */
-  .ex-edit{width:44px;flex-shrink:0;align-self:stretch;display:flex;align-items:center;justify-content:center;background:transparent;border:none;border-left:1px solid var(--border);color:var(--muted);font-size:15px;cursor:pointer;transition:background .15s,color .15s;touch-action:manipulation}
-  .ex-edit:active{background:var(--surface2);color:var(--text)}
-  .ex-row.focused .ex-edit{border-left-color:var(--border)}
-
-  /* MODAL */
   .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:500;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
   .modal-overlay.open{display:flex;animation:fadeIn .2s ease}
   .modal{background:var(--surface);border:1px solid var(--border);border-radius:24px 24px 0 0;padding:24px 20px 36px;width:100%;max-width:480px}
@@ -130,7 +119,7 @@
   .btn-go{background:var(--accent);color:#0a0a0f}
   .btn-stop{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
 
-  .today-card{background:var(--surface);border:1px solid rgba(232,255,71,.4);border-radius:18px;padding:18px;margin-bottom:16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;touch-action:manipulation}
+  .today-card{background:var(--surface);border:1px solid rgba(232,255,71,.4);border-radius:18px;padding:18px;margin-bottom:16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between}
   .info-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px}
   .info-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
   .info-body{font-size:12px;color:var(--muted);line-height:1.6}
@@ -221,55 +210,53 @@
       <div class="sess-icon">🏋️</div>
     </div>
     <div class="muscle-label">🔥 Échauffement</div>
-    <div class="ex-row"><div class="ex-tap" onclick=""><div class="ex-left"><div class="ex-warm">Mobilité épaules + gainage</div></div><div class="ex-right"><div class="ex-sets">5 MIN</div></div></div></div>
+    <div class="ex-row"><div class="ex-left"><div class="ex-warm">Mobilité épaules + gainage</div></div><div class="ex-right"><div class="ex-sets">5 MIN</div></div></div>
     <div class="muscle-label">💪 Pectoraux</div>
-    <div class="ex-row" data-sets="4" data-reps="10" data-charge="10" data-rest="120"><div class="ex-tap"><div class="ex-left"><div class="ex-name">Développé couché altères (plat)</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×10</div><div class="ex-charge">10 kg</div><div class="ex-rest">⏱ 2 min</div></div></div><button class="ex-edit">✏️</button></div>
-    <div class="ex-row" data-sets="3" data-reps="10" data-charge="10" data-rest="120"><div class="ex-tap"><div class="ex-left"><div class="ex-name">Développé incliné altères</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×10</div><div class="ex-charge">10 kg</div><div class="ex-rest">⏱ 2 min</div></div></div><button class="ex-edit">✏️</button></div>
-    <div class="ex-row" data-sets="3" data-reps="12" data-charge="28" data-rest="90"><div class="ex-tap"><div class="ex-left"><div class="ex-name">Fly Pec</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×12</div><div class="ex-charge">28 kg</div><div class="ex-rest">⏱ 1'30</div></div></div><button class="ex-edit">✏️</button></div>
+    <div class="ex-row" data-sets="4" data-reps="10" data-charge="10" data-rest="120"><div class="ex-left"><div class="ex-name">Développé couché altères (plat)</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×10</div><div class="ex-charge">10 kg</div><div class="ex-rest">⏱ 2 min</div></div></div>
+    <div class="ex-row" data-sets="3" data-reps="10" data-charge="10" data-rest="120"><div class="ex-left"><div class="ex-name">Développé incliné altères</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×10</div><div class="ex-charge">10 kg</div><div class="ex-rest">⏱ 2 min</div></div></div>
+    <div class="ex-row" data-sets="3" data-reps="12" data-charge="28" data-rest="90"><div class="ex-left"><div class="ex-name">Fly Pec</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×12</div><div class="ex-charge">28 kg</div><div class="ex-rest">⏱ 1'30</div></div></div>
     <div class="muscle-label">💪 Épaules</div>
-    <div class="ex-row" data-sets="4" data-reps="10" data-charge="8" data-rest="120"><div class="ex-tap"><div class="ex-left"><div class="ex-name">Développé militaire altères</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×10</div><div class="ex-charge">8 kg</div><div class="ex-rest">⏱ 2 min</div></div></div><button class="ex-edit">✏️</button></div>
-    <div class="ex-row" data-sets="3" data-reps="15" data-charge="6" data-rest="60"><div class="ex-tap"><div class="ex-left"><div class="ex-name">Élévations latérales</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×15</div><div class="ex-charge">6 kg</div><div class="ex-rest">⏱ 1 min</div></div></div><button class="ex-edit">✏️</button></div>
+    <div class="ex-row" data-sets="4" data-reps="10" data-charge="8" data-rest="120"><div class="ex-left"><div class="ex-name">Développé militaire altères</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×10</div><div class="ex-charge">8 kg</div><div class="ex-rest">⏱ 2 min</div></div></div>
+    <div class="ex-row" data-sets="3" data-reps="15" data-charge="6" data-rest="60"><div class="ex-left"><div class="ex-name">Élévations latérales</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×15</div><div class="ex-charge">6 kg</div><div class="ex-rest">⏱ 1 min</div></div></div>
     <div class="muscle-label">💪 Triceps</div>
-    <div class="ex-row" data-sets="4" data-reps="12" data-charge="20" data-rest="90"><div class="ex-tap"><div class="ex-left"><div class="ex-name">Tirage triceps corde</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×12</div><div class="ex-charge">20 kg</div><div class="ex-rest">⏱ 1'30</div></div></div><button class="ex-edit">✏️</button></div>
-    <div class="ex-row" data-sets="3" data-reps="10" data-charge="0" data-rest="90"><div class="ex-tap"><div class="ex-left"><div class="ex-name">Dips banc lesté</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×10</div><div class="ex-charge">poids corps</div><div class="ex-rest">⏱ 1'30</div></div></div><button class="ex-edit">✏️</button></div>
+    <div class="ex-row" data-sets="4" data-reps="12" data-charge="20" data-rest="90"><div class="ex-left"><div class="ex-name">Tirage triceps corde</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×12</div><div class="ex-charge">20 kg</div><div class="ex-rest">⏱ 1'30</div></div></div>
+    <div class="ex-row" data-sets="3" data-reps="10" data-charge="0" data-rest="90"><div class="ex-left"><div class="ex-name">Dips banc lesté</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×10</div><div class="ex-charge">poids corps</div><div class="ex-rest">⏱ 1'30</div></div></div>
   </div>
-
   <div class="seance-page s-b" id="seance-b">
     <div class="session-hdr" style="background:rgba(255,107,53,.05);border:1px solid rgba(255,107,53,.2)">
       <div><div class="session-tag tag-b">Séance B</div><div class="session-name">Dos · Biceps</div><div class="session-meta">7 exercices · ~70 min</div></div>
       <div class="sess-icon">🔙</div>
     </div>
     <div class="muscle-label">🔥 Échauffement</div>
-    <div class="ex-row"><div class="ex-tap"><div class="ex-left"><div class="ex-warm">Rameur léger ou rotations bras</div></div><div class="ex-right"><div class="ex-sets">5 MIN</div></div></div></div>
+    <div class="ex-row"><div class="ex-left"><div class="ex-warm">Rameur léger ou rotations bras</div></div><div class="ex-right"><div class="ex-sets">5 MIN</div></div></div>
     <div class="muscle-label">💪 Dos</div>
-    <div class="ex-row" data-sets="4" data-reps="10" data-charge="23" data-rest="120"><div class="ex-tap"><div class="ex-left"><div class="ex-name">Tirage vertical</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×10</div><div class="ex-charge">23 kg</div><div class="ex-rest">⏱ 2 min</div></div></div><button class="ex-edit">✏️</button></div>
-    <div class="ex-row" data-sets="4" data-reps="10" data-charge="25" data-rest="120"><div class="ex-tap"><div class="ex-left"><div class="ex-name">Tirage horizontal</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×10</div><div class="ex-charge">25 kg</div><div class="ex-rest">⏱ 2 min</div></div></div><button class="ex-edit">✏️</button></div>
-    <div class="ex-row" data-sets="4" data-reps="7" data-charge="34" data-rest="120"><div class="ex-tap"><div class="ex-left"><div class="ex-name">Tractions assistées machine</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×7</div><div class="ex-charge">34 kg</div><div class="ex-rest">⏱ 2 min</div></div></div><button class="ex-edit">✏️</button></div>
-    <div class="ex-row" data-sets="3" data-reps="12" data-charge="12" data-rest="90"><div class="ex-tap"><div class="ex-left"><div class="ex-name">Pull-over altère</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×12</div><div class="ex-charge">12 kg</div><div class="ex-rest">⏱ 1'30</div></div></div><button class="ex-edit">✏️</button></div>
+    <div class="ex-row" data-sets="4" data-reps="10" data-charge="23" data-rest="120"><div class="ex-left"><div class="ex-name">Tirage vertical</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×10</div><div class="ex-charge">23 kg</div><div class="ex-rest">⏱ 2 min</div></div></div>
+    <div class="ex-row" data-sets="4" data-reps="10" data-charge="25" data-rest="120"><div class="ex-left"><div class="ex-name">Tirage horizontal</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×10</div><div class="ex-charge">25 kg</div><div class="ex-rest">⏱ 2 min</div></div></div>
+    <div class="ex-row" data-sets="4" data-reps="7" data-charge="34" data-rest="120"><div class="ex-left"><div class="ex-name">Tractions assistées machine</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×7</div><div class="ex-charge">34 kg</div><div class="ex-rest">⏱ 2 min</div></div></div>
+    <div class="ex-row" data-sets="3" data-reps="12" data-charge="12" data-rest="90"><div class="ex-left"><div class="ex-name">Pull-over altère</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×12</div><div class="ex-charge">12 kg</div><div class="ex-rest">⏱ 1'30</div></div></div>
     <div class="muscle-label">💪 Biceps</div>
-    <div class="ex-row" data-sets="4" data-reps="10" data-charge="8" data-rest="90"><div class="ex-tap"><div class="ex-left"><div class="ex-name">Curl incliné altères</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×10</div><div class="ex-charge">8 kg</div><div class="ex-rest">⏱ 1'30</div></div></div><button class="ex-edit">✏️</button></div>
-    <div class="ex-row" data-sets="3" data-reps="12" data-charge="8" data-rest="90"><div class="ex-tap"><div class="ex-left"><div class="ex-name">Curl marteau</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×12</div><div class="ex-charge">8 kg</div><div class="ex-rest">⏱ 1'30</div></div></div><button class="ex-edit">✏️</button></div>
-    <div class="ex-row" data-sets="3" data-reps="10" data-charge="20" data-rest="90"><div class="ex-tap"><div class="ex-left"><div class="ex-name">Curl barre EZ</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×10</div><div class="ex-charge">20 kg</div><div class="ex-rest">⏱ 1'30</div></div></div><button class="ex-edit">✏️</button></div>
+    <div class="ex-row" data-sets="4" data-reps="10" data-charge="8" data-rest="90"><div class="ex-left"><div class="ex-name">Curl incliné altères</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×10</div><div class="ex-charge">8 kg</div><div class="ex-rest">⏱ 1'30</div></div></div>
+    <div class="ex-row" data-sets="3" data-reps="12" data-charge="8" data-rest="90"><div class="ex-left"><div class="ex-name">Curl marteau</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×12</div><div class="ex-charge">8 kg</div><div class="ex-rest">⏱ 1'30</div></div></div>
+    <div class="ex-row" data-sets="3" data-reps="10" data-charge="20" data-rest="90"><div class="ex-left"><div class="ex-name">Curl barre EZ</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×10</div><div class="ex-charge">20 kg</div><div class="ex-rest">⏱ 1'30</div></div></div>
   </div>
-
   <div class="seance-page s-c" id="seance-c">
     <div class="session-hdr" style="background:rgba(78,205,196,.05);border:1px solid rgba(78,205,196,.2)">
       <div><div class="session-tag tag-c">Séance C</div><div class="session-name">Épaules · Bras</div><div class="session-meta">8 exercices · ~60 min</div></div>
       <div class="sess-icon">🎯</div>
     </div>
     <div class="muscle-label">🔥 Échauffement</div>
-    <div class="ex-row"><div class="ex-tap"><div class="ex-left"><div class="ex-warm">Mobilité + élévations légères</div></div><div class="ex-right"><div class="ex-sets">5 MIN</div></div></div></div>
+    <div class="ex-row"><div class="ex-left"><div class="ex-warm">Mobilité + élévations légères</div></div><div class="ex-right"><div class="ex-sets">5 MIN</div></div></div>
     <div class="muscle-label">💪 Épaules</div>
-    <div class="ex-row" data-sets="4" data-reps="8" data-charge="20" data-rest="120"><div class="ex-tap"><div class="ex-left"><div class="ex-name">Développé militaire barre</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×8</div><div class="ex-charge">20 kg</div><div class="ex-rest">⏱ 2 min</div></div></div><button class="ex-edit">✏️</button></div>
-    <div class="ex-row" data-sets="4" data-reps="15" data-charge="6" data-rest="60"><div class="ex-tap"><div class="ex-left"><div class="ex-name">Élévations latérales</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×15</div><div class="ex-charge">6 kg</div><div class="ex-rest">⏱ 1 min</div></div></div><button class="ex-edit">✏️</button></div>
-    <div class="ex-row" data-sets="3" data-reps="12" data-charge="6" data-rest="60"><div class="ex-tap"><div class="ex-left"><div class="ex-name">Élévations frontales</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×12</div><div class="ex-charge">6 kg</div><div class="ex-rest">⏱ 1 min</div></div></div><button class="ex-edit">✏️</button></div>
-    <div class="ex-row" data-sets="3" data-reps="15" data-charge="6" data-rest="60"><div class="ex-tap"><div class="ex-left"><div class="ex-name">Oiseau (deltoïde post.)</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×15</div><div class="ex-charge">6 kg</div><div class="ex-rest">⏱ 1 min</div></div></div><button class="ex-edit">✏️</button></div>
+    <div class="ex-row" data-sets="4" data-reps="8" data-charge="20" data-rest="120"><div class="ex-left"><div class="ex-name">Développé militaire barre</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×8</div><div class="ex-charge">20 kg</div><div class="ex-rest">⏱ 2 min</div></div></div>
+    <div class="ex-row" data-sets="4" data-reps="15" data-charge="6" data-rest="60"><div class="ex-left"><div class="ex-name">Élévations latérales</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×15</div><div class="ex-charge">6 kg</div><div class="ex-rest">⏱ 1 min</div></div></div>
+    <div class="ex-row" data-sets="3" data-reps="12" data-charge="6" data-rest="60"><div class="ex-left"><div class="ex-name">Élévations frontales</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×12</div><div class="ex-charge">6 kg</div><div class="ex-rest">⏱ 1 min</div></div></div>
+    <div class="ex-row" data-sets="3" data-reps="15" data-charge="6" data-rest="60"><div class="ex-left"><div class="ex-name">Oiseau (deltoïde post.)</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×15</div><div class="ex-charge">6 kg</div><div class="ex-rest">⏱ 1 min</div></div></div>
     <div class="muscle-label">💪 Biceps</div>
-    <div class="ex-row" data-sets="3" data-reps="12" data-charge="10" data-rest="90"><div class="ex-tap"><div class="ex-left"><div class="ex-name">Curl incliné altères</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×12</div><div class="ex-charge">10 kg</div><div class="ex-rest">⏱ 1'30</div></div></div><button class="ex-edit">✏️</button></div>
-    <div class="ex-row" data-sets="3" data-reps="12" data-charge="10" data-rest="90"><div class="ex-tap"><div class="ex-left"><div class="ex-name">Curl concentration</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×12</div><div class="ex-charge">10 kg</div><div class="ex-rest">⏱ 1'30</div></div></div><button class="ex-edit">✏️</button></div>
+    <div class="ex-row" data-sets="3" data-reps="12" data-charge="10" data-rest="90"><div class="ex-left"><div class="ex-name">Curl incliné altères</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×12</div><div class="ex-charge">10 kg</div><div class="ex-rest">⏱ 1'30</div></div></div>
+    <div class="ex-row" data-sets="3" data-reps="12" data-charge="10" data-rest="90"><div class="ex-left"><div class="ex-name">Curl concentration</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×12</div><div class="ex-charge">10 kg</div><div class="ex-rest">⏱ 1'30</div></div></div>
     <div class="muscle-label">💪 Triceps</div>
-    <div class="ex-row" data-sets="4" data-reps="12" data-charge="20" data-rest="90"><div class="ex-tap"><div class="ex-left"><div class="ex-name">Tirage corde triceps</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×12</div><div class="ex-charge">20 kg</div><div class="ex-rest">⏱ 1'30</div></div></div><button class="ex-edit">✏️</button></div>
-    <div class="ex-row" data-sets="3" data-reps="12" data-charge="8" data-rest="90"><div class="ex-tap"><div class="ex-left"><div class="ex-name">Extension triceps 1 bras</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×12</div><div class="ex-charge">8 kg</div><div class="ex-rest">⏱ 1'30</div></div></div><button class="ex-edit">✏️</button></div>
+    <div class="ex-row" data-sets="4" data-reps="12" data-charge="20" data-rest="90"><div class="ex-left"><div class="ex-name">Tirage corde triceps</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">4×12</div><div class="ex-charge">20 kg</div><div class="ex-rest">⏱ 1'30</div></div></div>
+    <div class="ex-row" data-sets="3" data-reps="12" data-charge="8" data-rest="90"><div class="ex-left"><div class="ex-name">Extension triceps 1 bras</div><div class="focus-badge">▶ En cours</div></div><div class="ex-right"><div class="ex-sets">3×12</div><div class="ex-charge">8 kg</div><div class="ex-rest">⏱ 1'30</div></div></div>
   </div>
 </div>
 
@@ -346,7 +333,7 @@
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal">
     <div class="modal-title" id="modal-title">Modifier</div>
-    <div class="modal-sub">Appuie sur + / − pour ajuster</div>
+    <div class="modal-sub">+ / − pour ajuster</div>
     <div class="modal-fields">
       <div><div class="field-label">Séries</div><div class="field-row"><button class="field-btn" onclick="adj('sets',-1)">−</button><div class="field-val" id="val-sets">4</div><button class="field-btn" onclick="adj('sets',1)">+</button></div></div>
       <div><div class="field-label">Répétitions</div><div class="field-row"><button class="field-btn" onclick="adj('reps',-1)">−</button><div class="field-val" id="val-reps">10</div><button class="field-btn" onclick="adj('reps',1)">+</button></div></div>
@@ -370,7 +357,7 @@ function playCountdownBeep(s){ if(s===3||s===2||s===1) beep(440,.15,.4); if(s===
 function showPage(name,btn){ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active')); document.getElementById('page-'+name).classList.add('active'); btn.classList.add('active'); document.getElementById('sub-nav').classList[name==='seances'?'add':'remove']('visible'); }
 function showSeance(id,btn){ document.querySelectorAll('.seance-page').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.sub-tab').forEach(t=>t.classList.remove('act-a','act-b','act-c')); document.getElementById('seance-'+id).classList.add('active'); btn.classList.add('act-'+id); clearFocus(); resetSet(); }
 
-// FOCUS — sur la zone .ex-tap uniquement
+// FOCUS
 let focRow=null, focMax=0;
 function focusEx(row){
   const max=parseInt(row.dataset.sets)||0;
@@ -382,12 +369,51 @@ function focusEx(row){
 }
 function clearFocus(){ if(focRow){ focRow.classList.remove('focused'); focRow=null; focMax=0; } }
 
-// Attacher les events tap sur .ex-tap et edit sur .ex-edit
-document.querySelectorAll('.ex-tap').forEach(tap=>{
-  tap.addEventListener('click', ()=>{ focusEx(tap.closest('.ex-row')); });
-});
-document.querySelectorAll('.ex-edit').forEach(btn=>{
-  btn.addEventListener('click', e=>{ e.stopPropagation(); openModal(btn.closest('.ex-row')); });
+// ── LOGIQUE ULTRA SIMPLE ──
+// On enregistre le timestamp au touchstart
+// Au touchend on mesure la durée
+// < 400ms = tap → focus
+// ≥ 400ms = long press → modal
+// Si le doigt bouge > 10px on annule tout
+
+document.querySelectorAll('.ex-row').forEach(row => {
+  if (!row.dataset.sets) return;
+
+  let t0 = 0, sx = 0, sy = 0, cancelled = false;
+
+  row.addEventListener('touchstart', e => {
+    t0 = Date.now();
+    sx = e.touches[0].clientX;
+    sy = e.touches[0].clientY;
+    cancelled = false;
+    row.classList.add('pressing');
+  }, { passive: true });
+
+  row.addEventListener('touchmove', e => {
+    if (cancelled) return;
+    const dx = Math.abs(e.touches[0].clientX - sx);
+    const dy = Math.abs(e.touches[0].clientY - sy);
+    if (dx > 10 || dy > 10) {
+      cancelled = true;
+      row.classList.remove('pressing');
+    }
+  }, { passive: true });
+
+  row.addEventListener('touchend', () => {
+    row.classList.remove('pressing');
+    if (cancelled) return;
+    const duration = Date.now() - t0;
+    if (duration < 400) {
+      focusEx(row);
+    } else {
+      openModal(row);
+    }
+  });
+
+  row.addEventListener('touchcancel', () => {
+    cancelled = true;
+    row.classList.remove('pressing');
+  });
 });
 
 // MODAL
